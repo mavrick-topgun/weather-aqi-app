@@ -88,13 +88,6 @@ export default function LocationSearch({ onSelect, placeholder = 'Search for a c
     }
   };
 
-  const formatLocation = (result: GeocodingResult) => {
-    const parts = [result.name];
-    if (result.admin1) parts.push(result.admin1);
-    if (result.country) parts.push(result.country);
-    return parts.join(', ');
-  };
-
   return (
     <div ref={wrapperRef} className="relative">
       <div className="relative">
@@ -106,7 +99,7 @@ export default function LocationSearch({ onSelect, placeholder = 'Search for a c
           onKeyDown={handleKeyDown}
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={placeholder}
-          className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-shadow"
         />
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
           {isLoading ? (
@@ -123,20 +116,20 @@ export default function LocationSearch({ onSelect, placeholder = 'Search for a c
       </div>
 
       {isOpen && results.length > 0 && (
-        <ul className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-64 overflow-auto">
+        <ul className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg max-h-64 overflow-auto">
           {results.map((result, index) => (
             <li
               key={result.id}
               onClick={() => handleSelect(result)}
               onMouseEnter={() => setSelectedIndex(index)}
-              className={`px-4 py-3 cursor-pointer flex items-center justify-between ${
+              className={`px-4 py-3 cursor-pointer flex items-center justify-between first:rounded-t-2xl last:rounded-b-2xl ${
                 index === selectedIndex
-                  ? 'bg-blue-50 dark:bg-blue-900/30'
+                  ? 'bg-green-50 dark:bg-green-900/20'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               <div>
-                <div className="font-medium text-gray-900 dark:text-white">
+                <div className="font-semibold text-gray-900 dark:text-white">
                   {result.name}
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -144,7 +137,7 @@ export default function LocationSearch({ onSelect, placeholder = 'Search for a c
                 </div>
               </div>
               {result.countryCode && (
-                <span className="text-xs text-gray-400 dark:text-gray-500 uppercase">
+                <span className="text-xs text-gray-400 dark:text-gray-500 uppercase font-semibold">
                   {result.countryCode}
                 </span>
               )}
@@ -154,7 +147,7 @@ export default function LocationSearch({ onSelect, placeholder = 'Search for a c
       )}
 
       {isOpen && query.length >= 2 && results.length === 0 && !isLoading && (
-        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 text-center text-gray-500 dark:text-gray-400">
+        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-4 text-center text-gray-500 dark:text-gray-400">
           No locations found
         </div>
       )}

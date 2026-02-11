@@ -89,7 +89,7 @@ export default function Dashboard() {
   if (loading && locations.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500" />
       </div>
     );
   }
@@ -117,8 +117,8 @@ export default function Dashboard() {
           )}
 
           {!selectedLocationId && !loading && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-12 text-center shadow-md">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center border border-gray-200 dark:border-gray-700 shadow-sm">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Welcome to Breathe & Go
               </h2>
               <p className="text-gray-500 dark:text-gray-400">
@@ -129,7 +129,7 @@ export default function Dashboard() {
 
           {loading && selectedLocationId && (
             <div className="flex items-center justify-center min-h-[300px]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500" />
             </div>
           )}
 

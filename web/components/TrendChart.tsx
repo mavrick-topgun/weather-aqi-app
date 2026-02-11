@@ -15,8 +15,8 @@ export default function TrendChart({ scores, aqi, temperature, type, title }: Tr
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{title}</h3>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{title}</h3>
         <p className="text-gray-500 dark:text-gray-400">No trend data available</p>
       </div>
     );
@@ -53,7 +53,7 @@ export default function TrendChart({ scores, aqi, temperature, type, title }: Tr
       if (value <= 150) return 'bg-orange-500';
       return 'bg-red-500';
     }
-    return 'bg-blue-500';
+    return 'bg-green-500';
   };
 
   const formatDate = (dateStr: string) => {
@@ -62,8 +62,8 @@ export default function TrendChart({ scores, aqi, temperature, type, title }: Tr
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{title}</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{title}</h3>
 
       <div className="flex items-end justify-between h-40 gap-1">
         {data.map((item, index) => {
@@ -84,14 +84,14 @@ export default function TrendChart({ scores, aqi, temperature, type, title }: Tr
             >
               <div className="relative w-full flex justify-center mb-1">
                 <div
-                  className={`w-full max-w-[24px] rounded-t ${getBarColor(value, index)} transition-all group-hover:opacity-80`}
+                  className={`w-full max-w-[24px] rounded-t-lg ${getBarColor(value, index)} transition-all group-hover:opacity-80`}
                   style={{ height: `${Math.max(height, 5)}%`, minHeight: '4px' }}
                 />
-                <div className="absolute -top-6 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute -top-6 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs font-semibold px-2 py-1 rounded-lg">
                   {type === 'temperature' ? `${value}°` : value}
                 </div>
               </div>
-              <span className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 truncate max-w-full">
                 {formatDate('date' in item ? item.date : '')}
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function TrendChart({ scores, aqi, temperature, type, title }: Tr
         })}
       </div>
 
-      <div className="mt-4 flex justify-between text-sm text-gray-500 dark:text-gray-400">
+      <div className="mt-4 flex justify-between text-sm font-semibold text-gray-500 dark:text-gray-400">
         <span>
           Avg:{' '}
           {type === 'temperature'

@@ -35,8 +35,8 @@ export default function LocationPicker({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         Locations
       </h3>
 
@@ -55,7 +55,7 @@ export default function LocationPicker({
       </div>
 
       {/* Location list */}
-      <div className="space-y-2">
+      <div className="space-y-1">
         {locations.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">
             No locations saved. Search for a city above to add one.
@@ -64,19 +64,19 @@ export default function LocationPicker({
           locations.map((location) => (
             <div
               key={location.id}
-              className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
+              className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-colors ${
                 selectedId === location.id
-                  ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-transparent'
+                  ? 'bg-green-50 dark:bg-green-900/20 border border-green-500'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent'
               }`}
               onClick={() => onSelect(location.id)}
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-2 h-2 rounded-full ${
-                  selectedId === location.id ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
+                  selectedId === location.id ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                 }`} />
                 <div>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-semibold text-gray-900 dark:text-white">
                     {location.name}
                   </span>
                 </div>
@@ -86,7 +86,7 @@ export default function LocationPicker({
                   e.stopPropagation();
                   onDelete(location.id);
                 }}
-                className="text-gray-400 hover:text-red-500 p-1 rounded transition-colors"
+                className="text-gray-400 hover:text-red-500 p-1 rounded-full transition-colors"
                 title="Delete location"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

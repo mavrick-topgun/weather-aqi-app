@@ -30,8 +30,8 @@ export default function ForecastCards({ forecast }: ForecastCardsProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         3-Day Forecast
       </h3>
 
@@ -39,16 +39,18 @@ export default function ForecastCards({ forecast }: ForecastCardsProps) {
         {forecast.map((day, index) => (
           <div
             key={day.date}
-            className={`p-4 rounded-lg ${
-              index === 0 ? 'bg-gray-50 dark:bg-gray-700' : 'bg-gray-50/50 dark:bg-gray-700/50'
+            className={`p-4 rounded-xl border ${
+              index === 0
+                ? 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                : 'bg-gray-50/50 dark:bg-gray-700/50 border-gray-100 dark:border-gray-700'
             }`}
           >
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900 dark:text-white">
                 {formatDate(day.date)}
               </span>
               <span
-                className={`px-2 py-1 text-xs text-white rounded ${recommendationColors[day.recommendation]}`}
+                className={`px-2 py-1 text-xs font-semibold text-white rounded-full ${recommendationColors[day.recommendation]}`}
               >
                 {day.recommendation}
               </span>
@@ -63,9 +65,9 @@ export default function ForecastCards({ forecast }: ForecastCardsProps) {
               </div>
 
               <div className="text-right text-sm">
-                <div className="text-gray-600 dark:text-gray-300">
+                <div className="text-gray-600 dark:text-gray-300 font-semibold">
                   {day.temperatureMax !== null ? `${Math.round(day.temperatureMax)}°` : '--'}
-                  <span className="text-gray-400"> / </span>
+                  <span className="text-gray-400 font-normal"> / </span>
                   {day.temperatureMin !== null ? `${Math.round(day.temperatureMin)}°` : '--'}
                 </div>
                 <div className="text-gray-500 dark:text-gray-400">

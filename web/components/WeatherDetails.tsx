@@ -8,13 +8,13 @@ interface WeatherDetailsProps {
 
 export default function WeatherDetails({ weather }: WeatherDetailsProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         Weather
       </h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">Temperature</span>
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Temperature</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.temperatureMax !== null
               ? `${Math.round(weather.temperatureMax)}°`
@@ -26,7 +26,7 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
         </div>
 
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">Precipitation</span>
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Precipitation</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.precipitation !== null
               ? `${weather.precipitation.toFixed(1)} mm`
@@ -35,7 +35,7 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
         </div>
 
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">Wind</span>
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Wind</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.windSpeed !== null
               ? `${Math.round(weather.windSpeed)} km/h`
@@ -44,7 +44,7 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
         </div>
 
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">UV Index</span>
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">UV Index</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.uvIndex !== null ? weather.uvIndex.toFixed(1) : '--'}
           </span>

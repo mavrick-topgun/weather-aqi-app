@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from './providers';
 import ThemeToggle from '@/components/ThemeToggle';
 
-const inter = Inter({ subsets: ['latin'] });
+const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '600', '700', '800'] });
 
 export const metadata: Metadata = {
   title: 'Breathe & Go',
@@ -34,25 +34,25 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={nunitoSans.className}>
         <ThemeProvider>
           <div className="min-h-screen">
-            <header className="bg-white dark:bg-gray-800 shadow-sm">
+            <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div className="flex justify-between items-center">
-                  <a href="/" className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <a href="/" className="text-2xl font-extrabold text-green-700 dark:text-green-400">
                     Breathe & Go
                   </a>
-                  <nav className="flex items-center space-x-4">
+                  <nav className="flex items-center space-x-1">
                     <a
                       href="/"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                      className="px-4 py-2 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       Dashboard
                     </a>
                     <a
                       href="/locations"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                      className="px-4 py-2 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       Locations
                     </a>

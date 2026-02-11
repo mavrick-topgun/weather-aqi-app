@@ -17,10 +17,10 @@ const recommendationColors: Record<Recommendation, string> = {
 };
 
 const recommendationBgColors: Record<Recommendation, string> = {
-  Great: 'bg-green-50 dark:bg-green-900/20',
-  Okay: 'bg-yellow-50 dark:bg-yellow-900/20',
-  Caution: 'bg-orange-50 dark:bg-orange-900/20',
-  Avoid: 'bg-red-50 dark:bg-red-900/20',
+  Great: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+  Okay: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
+  Caution: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800',
+  Avoid: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
 };
 
 const recommendationTextColors: Record<Recommendation, string> = {
@@ -41,9 +41,9 @@ export default function ScoreCard({
   const textColor = recommendationTextColors[recommendation];
 
   return (
-    <div className={`rounded-2xl p-6 ${bgColor} shadow-lg`}>
+    <div className={`rounded-2xl p-6 border ${bgColor} shadow-sm`}>
       <div className="text-center mb-6">
-        <h2 className="text-lg font-medium text-gray-600 dark:text-gray-300 mb-2">
+        <h2 className="text-lg font-bold text-gray-600 dark:text-gray-300 mb-2">
           {locationName}
         </h2>
         <div className="relative inline-flex items-center justify-center">
@@ -70,22 +70,22 @@ export default function ScoreCard({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className={`text-5xl font-bold ${textColor}`}>{score}</span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">out of 100</span>
+            <span className={`text-5xl font-extrabold ${textColor}`}>{score}</span>
+            <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">out of 100</span>
           </div>
         </div>
       </div>
 
       <div className="text-center mb-6">
         <span
-          className={`inline-block px-4 py-2 rounded-full text-white font-semibold ${ringColor}`}
+          className={`inline-block px-4 py-2 rounded-full text-white font-bold ${ringColor}`}
         >
           {recommendation}
         </span>
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-medium text-gray-700 dark:text-gray-300">Why this score?</h3>
+        <h3 className="font-bold text-gray-700 dark:text-gray-300">Why this score?</h3>
         <ul className="space-y-1">
           {reasons.map((reason, index) => (
             <li
