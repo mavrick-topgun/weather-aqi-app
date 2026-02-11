@@ -14,3 +14,7 @@ target/
 
 # Logs
 *.log
+
+
+# Next.js / TypeScript build
+web/tsconfig.tsbuildinfo
