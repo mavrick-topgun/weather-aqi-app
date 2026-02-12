@@ -41,6 +41,11 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
               ? `${Math.round(weather.windSpeed)} km/h`
               : '--'}
           </span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {weather.windDirection !== null
+              ? getWindDirectionLabel(weather.windDirection)
+              : ''}
+          </span>
         </div>
 
         <div className="flex flex-col">
@@ -55,6 +60,12 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
       </div>
     </div>
   );
+}
+
+function getWindDirectionLabel(degrees: number): string {
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const index = Math.round(degrees / 45) % 8;
+  return directions[index];
 }
 
 function getUvLabel(uv: number | null): string {

@@ -19,6 +19,7 @@ export interface WeatherInfo {
   temperatureMin: number | null;
   precipitation: number | null;
   windSpeed: number | null;
+  windDirection: number | null;
   uvIndex: number | null;
 }
 

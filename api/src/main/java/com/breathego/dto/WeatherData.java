@@ -9,5 +9,6 @@ public record WeatherData(
         BigDecimal temperatureMin,
         BigDecimal precipitation,
         BigDecimal windSpeed,
+        Integer windDirection,
         BigDecimal uvIndex
 ) {}

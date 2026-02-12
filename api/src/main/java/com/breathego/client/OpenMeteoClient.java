@@ -37,7 +37,7 @@ public class OpenMeteoClient {
         log.debug("Fetching weather forecast for lat={}, lon={}, days={}", latitude, longitude, days);
 
         String url = String.format(
-                "%s?latitude=%s&longitude=%s&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,uv_index_max&forecast_days=%d&timezone=auto",
+                "%s?latitude=%s&longitude=%s&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant,uv_index_max&forecast_days=%d&timezone=auto",
                 weatherUrl, latitude, longitude, days
         );
 
@@ -89,7 +89,7 @@ public class OpenMeteoClient {
         log.debug("Fetching historical weather for lat={}, lon={}, start={}, end={}", latitude, longitude, startDate, endDate);
 
         String url = String.format(
-                "https://archive-api.open-meteo.com/v1/archive?latitude=%s&longitude=%s&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&start_date=%s&end_date=%s&timezone=auto",
+                "https://archive-api.open-meteo.com/v1/archive?latitude=%s&longitude=%s&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant&start_date=%s&end_date=%s&timezone=auto",
                 latitude, longitude, startDate, endDate
         );
 
@@ -115,6 +115,7 @@ public class OpenMeteoClient {
         JsonNode tempMin = daily.get("temperature_2m_min");
         JsonNode precip = daily.get("precipitation_sum");
         JsonNode wind = daily.get("wind_speed_10m_max");
+        JsonNode windDir = daily.has("wind_direction_10m_dominant") ? daily.get("wind_direction_10m_dominant") : null;
         JsonNode uv = daily.has("uv_index_max") ? daily.get("uv_index_max") : null;
 
         for (int i = 0; i < dates.size(); i++) {
@@ -124,6 +125,7 @@ public class OpenMeteoClient {
                     getBigDecimal(tempMin, i),
                     getBigDecimal(precip, i),
                     getBigDecimal(wind, i),
+                    windDir != null ? getInteger(windDir, i) : null,
                     uv != null ? getBigDecimal(uv, i) : null
             ));
         }

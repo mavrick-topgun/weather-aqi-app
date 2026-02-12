@@ -120,7 +120,7 @@ class ScoringServiceTest {
 
         private WeatherData createWeather(BigDecimal precip) {
             return new WeatherData(today, new BigDecimal("20"), new BigDecimal("15"),
-                    precip, new BigDecimal("10"), new BigDecimal("5"));
+                    precip, new BigDecimal("10"), null, new BigDecimal("5"));
         }
     }
 
@@ -153,7 +153,7 @@ class ScoringServiceTest {
 
         private WeatherData createWeather(BigDecimal max, BigDecimal min) {
             return new WeatherData(today, max, min, BigDecimal.ZERO,
-                    new BigDecimal("10"), new BigDecimal("5"));
+                    new BigDecimal("10"), null, new BigDecimal("5"));
         }
     }
 
@@ -177,7 +177,7 @@ class ScoringServiceTest {
 
         private WeatherData createWeather(BigDecimal wind) {
             return new WeatherData(today, new BigDecimal("20"), new BigDecimal("15"),
-                    BigDecimal.ZERO, wind, new BigDecimal("5"));
+                    BigDecimal.ZERO, wind, null, new BigDecimal("5"));
         }
     }
 
@@ -194,6 +194,7 @@ class ScoringServiceTest {
                     new BigDecimal("18"),
                     BigDecimal.ZERO,
                     new BigDecimal("10"),
+                    null,
                     new BigDecimal("3")
             );
             AqiData aqi = new AqiData(today, 25, new BigDecimal("10"), new BigDecimal("30"));
@@ -212,6 +213,7 @@ class ScoringServiceTest {
                     new BigDecimal("30"),
                     new BigDecimal("20"),
                     new BigDecimal("50"),
+                    null,
                     new BigDecimal("10")
             );
             AqiData aqi = new AqiData(today, 180, new BigDecimal("100"), new BigDecimal("100"));
@@ -230,6 +232,7 @@ class ScoringServiceTest {
                     new BigDecimal("18"),
                     BigDecimal.ZERO,
                     new BigDecimal("10"),
+                    null,
                     new BigDecimal("9")
             );
             AqiData aqi = new AqiData(today, 25, new BigDecimal("10"), new BigDecimal("30"));
