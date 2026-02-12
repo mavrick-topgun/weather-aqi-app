@@ -10,7 +10,7 @@ export default function AqiDetails({ aqi }: AqiDetailsProps) {
   const aqiCategory = getAqiCategory(aqi.value);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm h-full">
       <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         Air Quality
       </h3>

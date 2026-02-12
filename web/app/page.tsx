@@ -22,13 +22,12 @@ export default function Dashboard() {
     try {
       const data = await api.getLocations();
       setLocations(data);
-      if (data.length > 0 && !selectedLocationId) {
-        setSelectedLocationId(data[0].id);
-      }
+      return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load locations');
+      return [];
     }
-  }, [selectedLocationId]);
+  }, []);
 
   const loadForecast = useCallback(async (locationId: number) => {
     setLoading(true);
@@ -48,14 +47,18 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    loadLocations();
+    loadLocations().then((data) => {
+      if (data.length > 0) {
+        setSelectedLocationId(data[0].id);
+      } else {
+        setLoading(false);
+      }
+    });
   }, [loadLocations]);
 
   useEffect(() => {
     if (selectedLocationId) {
       loadForecast(selectedLocationId);
-    } else {
-      setLoading(false);
     }
   }, [selectedLocationId, loadForecast]);
 
@@ -95,8 +98,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Sidebar with locations */}
         <div className="lg:col-span-1">
           <LocationPicker
@@ -109,9 +112,9 @@ export default function Dashboard() {
         </div>
 
         {/* Main content */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-4">
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-400">
+            <div role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-400">
               {error}
             </div>
           )}
@@ -136,7 +139,7 @@ export default function Dashboard() {
           {forecast && !loading && (
             <>
               {/* Score and details row */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-1">
                   <ScoreCard
                     score={forecast.score}
@@ -153,24 +156,17 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Forecast */}
-              <ForecastCards forecast={forecast.forecast} />
-
-              {/* Trends */}
-              {trends && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <TrendChart
-                    scores={trends.scores}
-                    type="score"
-                    title="Score Trend (7 days)"
-                  />
+              {/* Forecast + Trends side by side */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ForecastCards forecast={forecast.forecast} />
+                {trends && (
                   <TrendChart
                     aqi={trends.aqi}
                     type="aqi"
                     title="AQI Trend (7 days)"
                   />
-                </div>
-              )}
+                )}
+              </div>
             </>
           )}
         </div>

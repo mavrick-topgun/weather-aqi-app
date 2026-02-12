@@ -3,6 +3,8 @@ import { Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from './providers';
 import ThemeToggle from '@/components/ThemeToggle';
+import UnitToggle from '@/components/UnitToggle';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '600', '700', '800'] });
 
@@ -38,7 +40,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="min-h-screen">
             <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
                 <div className="flex justify-between items-center">
                   <a href="/" className="text-2xl font-extrabold text-green-700 dark:text-green-400">
                     Breathe & Go
@@ -51,18 +53,27 @@ export default function RootLayout({
                       Dashboard
                     </a>
                     <a
+                      href="/map"
+                      className="px-4 py-2 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Map
+                    </a>
+                    <a
                       href="/locations"
                       className="px-4 py-2 rounded-full text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       Locations
                     </a>
+                    <UnitToggle />
                     <ThemeToggle />
                   </nav>
                 </div>
               </div>
             </header>
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {children}
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <ErrorBoundary>
+                {children}
+              </ErrorBoundary>
             </main>
           </div>
         </ThemeProvider>

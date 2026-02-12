@@ -1,14 +1,25 @@
 'use client';
 
+import { useUnits } from '@/app/providers';
 import type { WeatherInfo } from '@/types';
 
 interface WeatherDetailsProps {
   weather: WeatherInfo;
 }
 
+function toF(c: number): number {
+  return (c * 9) / 5 + 32;
+}
+
+function toMph(kmh: number): number {
+  return kmh * 0.621371;
+}
+
 export default function WeatherDetails({ weather }: WeatherDetailsProps) {
+  const { units } = useUnits();
+  const imperial = units === 'imperial';
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm h-full">
       <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         Weather
       </h3>
@@ -17,11 +28,11 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
           <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Temperature</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.temperatureMax !== null
-              ? `${Math.round(weather.temperatureMax)}°`
+              ? `${Math.round(imperial ? toF(weather.temperatureMax) : weather.temperatureMax)}°${imperial ? 'F' : 'C'}`
               : '--'}
           </span>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Low: {weather.temperatureMin !== null ? `${Math.round(weather.temperatureMin)}°` : '--'}
+            Low: {weather.temperatureMin !== null ? `${Math.round(imperial ? toF(weather.temperatureMin) : weather.temperatureMin)}°${imperial ? 'F' : 'C'}` : '--'}
           </span>
         </div>
 
@@ -38,7 +49,7 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
           <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Wind</span>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             {weather.windSpeed !== null
-              ? `${Math.round(weather.windSpeed)} km/h`
+              ? `${Math.round(imperial ? toMph(weather.windSpeed) : weather.windSpeed)} ${imperial ? 'mph' : 'km/h'}`
               : '--'}
           </span>
           {weather.windDirection !== null && (
