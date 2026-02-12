@@ -41,11 +41,23 @@ export default function WeatherDetails({ weather }: WeatherDetailsProps) {
               ? `${Math.round(weather.windSpeed)} km/h`
               : '--'}
           </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {weather.windDirection !== null
-              ? getWindDirectionLabel(weather.windDirection)
-              : ''}
-          </span>
+          {weather.windDirection !== null && (
+            <span className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                className="text-gray-600 dark:text-gray-300"
+                style={{ transform: `rotate(${weather.windDirection}deg)` }}
+              >
+                <path
+                  d="M7 1L3 12L7 9L11 12L7 1Z"
+                  fill="currentColor"
+                />
+              </svg>
+              {getWindDirectionLabel(weather.windDirection)}
+            </span>
+          )}
         </div>
 
         <div className="flex flex-col">
