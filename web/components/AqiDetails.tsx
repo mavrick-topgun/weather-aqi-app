@@ -10,8 +10,8 @@ export default function AqiDetails({ aqi }: AqiDetailsProps) {
   const aqiCategory = getAqiCategory(aqi.value);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm h-full">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
         Air Quality
       </h3>
 
@@ -20,10 +20,10 @@ export default function AqiDetails({ aqi }: AqiDetailsProps) {
           <span className="text-4xl font-bold text-gray-900 dark:text-white">
             {aqi.value ?? '--'}
           </span>
-          <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">US AQI</span>
+          <span className="ml-2 text-sm font-semibold text-gray-500 dark:text-gray-400">US AQI</span>
         </div>
         <span
-          className={`px-3 py-1 rounded-full text-sm font-medium ${aqiCategory.bgColor} ${aqiCategory.textColor}`}
+          className={`px-3 py-1 rounded-full text-sm font-semibold ${aqiCategory.bgColor} ${aqiCategory.textColor}`}
         >
           {aqiCategory.label}
         </span>
@@ -38,14 +38,14 @@ export default function AqiDetails({ aqi }: AqiDetailsProps) {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">PM2.5</span>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">PM2.5</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">
             {aqi.pm25 !== null ? `${aqi.pm25.toFixed(1)} μg/m³` : '--'}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 dark:text-gray-400">Ozone</span>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white">
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Ozone</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">
             {aqi.ozone !== null ? `${aqi.ozone.toFixed(1)} μg/m³` : '--'}
           </span>
         </div>

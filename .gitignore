@@ -14,3 +14,11 @@ target/
 
 # Logs
 *.log
+
+
+# Next.js / TypeScript build
+web/tsconfig.tsbuildinfo
+
+# Environment files
+.env.local
+.env*.local

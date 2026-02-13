@@ -19,6 +19,7 @@ public record ForecastResponse(
             BigDecimal temperatureMin,
             BigDecimal precipitation,
             BigDecimal windSpeed,
+            Integer windDirection,
             BigDecimal uvIndex
     ) {}
 

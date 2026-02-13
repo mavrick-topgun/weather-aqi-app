@@ -85,6 +85,7 @@ public class ForecastService {
                         todayWeather.temperatureMin(),
                         todayWeather.precipitation(),
                         todayWeather.windSpeed(),
+                        todayWeather.windDirection(),
                         todayWeather.uvIndex()
                 ),
                 new ForecastResponse.AqiInfo(
