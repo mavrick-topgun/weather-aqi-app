@@ -19,3 +19,37 @@ body {
   background: rgb(var(--background-start-rgb));
   min-height: 100vh;
 }
+
+/* Leaflet overrides */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.dark .leaflet-popup-content-wrapper {
+  background-color: rgb(31 41 55);
+  color: rgb(243 244 246);
+  border-radius: 1rem;
+}
+
+.dark .leaflet-popup-tip {
+  background-color: rgb(31 41 55);
+}
+
+.dark .leaflet-control-zoom a {
+  background-color: rgb(31 41 55);
+  color: rgb(243 244 246);
+  border-color: rgb(55 65 81);
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background-color: rgb(55 65 81);
+}
+
+.dark .leaflet-control-attribution {
+  background-color: rgba(31, 41, 55, 0.8) !important;
+  color: rgb(156 163 175);
+}
+
+.dark .leaflet-control-attribution a {
+  color: rgb(156 163 175);
+}
