@@ -99,10 +99,13 @@ public class ForecastService {
 
     public TrendsResponse getTrends(Long locationId, int days) {
         Location location = locationService.getLocationEntity(locationId);
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = endDate.minusDays(days);
+        int forecastDays = Math.min(days, 7);
 
-        // First check if we have cached data
+        // Trends show forecast data starting from today
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(forecastDays - 1);
+
+        // Check if we have complete cached data for the requested range
         List<DailyMetrics> cachedMetrics = dailyMetricsRepository.findByLocationIdAndDateBetween(
                 locationId, startDate, endDate
         );
@@ -111,8 +114,8 @@ public class ForecastService {
         List<TrendsResponse.TemperatureTrend> tempTrends = new ArrayList<>();
         List<TrendsResponse.ScoreTrend> scoreTrends = new ArrayList<>();
 
-        if (!cachedMetrics.isEmpty()) {
-            // Use cached data
+        if (cachedMetrics.size() >= forecastDays) {
+            // Complete cache hit — use cached data
             for (DailyMetrics dm : cachedMetrics) {
                 aqiTrends.add(new TrendsResponse.AqiTrend(dm.getDate(), dm.getAqiValue()));
                 tempTrends.add(new TrendsResponse.TemperatureTrend(
@@ -123,13 +126,13 @@ public class ForecastService {
                 ));
             }
         } else {
-            // Fetch from API - for forecast data only (Open-Meteo free tier)
+            // Incomplete or no cache — fetch fresh forecast from API
             try {
                 List<AqiData> aqiList = openMeteoClient.getAirQuality(
-                        location.getLatitude(), location.getLongitude(), Math.min(days, 7)
+                        location.getLatitude(), location.getLongitude(), forecastDays
                 );
                 List<WeatherData> weatherList = openMeteoClient.getWeatherForecast(
-                        location.getLatitude(), location.getLongitude(), Math.min(days, 7)
+                        location.getLatitude(), location.getLongitude(), forecastDays
                 );
 
                 for (int i = 0; i < weatherList.size(); i++) {
@@ -150,6 +153,16 @@ public class ForecastService {
                 }
             } catch (Exception e) {
                 log.warn("Unable to fetch trend data from API: {}", e.getMessage());
+                // Fall back to whatever partial cache exists
+                for (DailyMetrics dm : cachedMetrics) {
+                    aqiTrends.add(new TrendsResponse.AqiTrend(dm.getDate(), dm.getAqiValue()));
+                    tempTrends.add(new TrendsResponse.TemperatureTrend(
+                            dm.getDate(), dm.getTemperatureMin(), dm.getTemperatureMax()
+                    ));
+                    scoreTrends.add(new TrendsResponse.ScoreTrend(
+                            dm.getDate(), dm.getScore(), dm.getRecommendation()
+                    ));
+                }
             }
         }
 

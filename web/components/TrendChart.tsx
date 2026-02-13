@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useUnits } from '@/app/providers';
 import type { AqiTrend, TemperatureTrend } from '@/types';
 
@@ -26,23 +26,25 @@ export default function TrendChart({ aqi, temperature, type, title }: TrendChart
   const { units } = useUnits();
   const imperial = units === 'imperial';
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [chartWidth, setChartWidth] = useState(500);
   const chartHeight = 160;
+  const roRef = useRef<ResizeObserver | null>(null);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+  const containerRef = useCallback((node: HTMLDivElement | null) => {
+    if (roRef.current) {
+      roRef.current.disconnect();
+      roRef.current = null;
+    }
+    if (!node) return;
 
     const ro = new ResizeObserver((entries) => {
       const width = entries[0].contentRect.width;
       if (width > 0) setChartWidth(Math.round(width));
     });
 
-    ro.observe(el);
-    setChartWidth(Math.round(el.clientWidth));
-
-    return () => ro.disconnect();
+    ro.observe(node);
+    setChartWidth(Math.round(node.clientWidth));
+    roRef.current = ro;
   }, []);
 
   const convertTemp = (v: number) => (imperial ? toF(v) : v);
@@ -66,22 +68,8 @@ export default function TrendChart({ aqi, temperature, type, title }: TrendChart
 
   // Line chart for AQI
   if (type === 'aqi' && aqi) {
-    // Filter out null values
-    const validEntries = aqi
-      .map((a, i) => ({ ...a, originalIndex: i }))
-      .filter((a) => a.value != null);
-
-    if (validEntries.length === 0) {
-      return (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm h-full">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{title}</h3>
-          <p className="text-gray-500 dark:text-gray-400">No AQI data available</p>
-        </div>
-      );
-    }
-
-    const values = validEntries.map((a) => a.value as number);
-    const maxValue = Math.max(...values);
+    const values = aqi.map((a) => a.value ?? 0);
+    const maxValue = Math.max(...values, 1);
     const minValue = Math.min(...values, 0);
     const range = maxValue - minValue || 1;
 
@@ -94,18 +82,12 @@ export default function TrendChart({ aqi, temperature, type, title }: TrendChart
     const yMax = maxValue + range * 0.1;
     const yRange = yMax - yMin || 1;
 
-    const totalEntries = aqi.length;
-    const points = validEntries.map((entry) => {
-      const xPos = totalEntries > 1
-        ? entry.originalIndex / (totalEntries - 1)
-        : 0.5;
-      return {
-        x: padding.left + xPos * plotWidth,
-        y: padding.top + plotHeight - ((entry.value as number - yMin) / yRange) * plotHeight,
-        value: entry.value as number,
-        date: entry.date,
-      };
-    });
+    const points = values.map((v, i) => ({
+      x: padding.left + (i / (values.length - 1 || 1)) * plotWidth,
+      y: padding.top + plotHeight - ((v - yMin) / yRange) * plotHeight,
+      value: v,
+      date: aqi[i].date,
+    }));
 
     const linePath = points
       .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
