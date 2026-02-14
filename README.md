@@ -2,7 +2,7 @@
 
 Weather + AQI Daily Decision App that helps users decide when to go outside based on real-world data.
 
-![Sample](Sample.png)
+![Sample](Sample1.png)
 
 ## Features
 
