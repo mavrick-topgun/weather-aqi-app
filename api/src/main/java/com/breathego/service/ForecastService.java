@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,8 +102,10 @@ public class ForecastService {
         Location location = locationService.getLocationEntity(locationId);
         int forecastDays = Math.min(days, 7);
 
-        // Trends show forecast data starting from today
-        LocalDate startDate = LocalDate.now();
+        // Use the location's timezone to determine "today" so the cache
+        // date range matches what the Open-Meteo API returns.
+        ZoneId locationZone = resolveZone(location.getTimezone());
+        LocalDate startDate = LocalDate.now(locationZone);
         LocalDate endDate = startDate.plusDays(forecastDays - 1);
 
         // Check if we have complete cached data for the requested range
@@ -177,6 +180,17 @@ public class ForecastService {
     }
 
     private void saveDailyMetrics(Location location, WeatherData weather, AqiData aqi, Score score) {
+        // Check if metrics already exist to avoid unique constraint violations.
+        // A caught constraint violation in PostgreSQL still marks the transaction
+        // as aborted, causing all subsequent operations to fail.
+        boolean exists = dailyMetricsRepository.existsByLocationIdAndDate(
+                location.getId(), weather.date());
+        if (exists) {
+            log.debug("Metrics already exist for location {} on {}, skipping save",
+                    location.getId(), weather.date());
+            return;
+        }
+
         DailyMetrics metrics = new DailyMetrics();
         metrics.setLocation(location);
         metrics.setDate(weather.date());
@@ -194,10 +208,17 @@ public class ForecastService {
             metrics.setOzone(aqi.ozone());
         }
 
+        dailyMetricsRepository.save(metrics);
+    }
+
+    private static ZoneId resolveZone(String timezone) {
+        if (timezone == null || timezone.isBlank() || "auto".equals(timezone)) {
+            return ZoneId.systemDefault();
+        }
         try {
-            dailyMetricsRepository.save(metrics);
+            return ZoneId.of(timezone);
         } catch (Exception e) {
-            log.debug("Metrics already exist for this date, skipping save");
+            return ZoneId.systemDefault();
         }
     }
 

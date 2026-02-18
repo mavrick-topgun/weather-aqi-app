@@ -21,4 +21,6 @@ public interface DailyMetricsRepository extends JpaRepository<DailyMetrics, Long
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
+    boolean existsByLocationIdAndDate(Long locationId, LocalDate date);
 }
